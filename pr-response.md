@@ -44,3 +44,21 @@ Manual testing:
 
 ## AI Usage
 Used AI for codebase orientation in order to understand what add_to_collection() and the existing test patterns did before writing the equivalent watchlist code myself. I also used it to catch a couple of mechanical issues during implementation (a broken line from a manual edit, a missing exception class) and to help script the interactive rebase/commit-message rewrite in Milestone 4. 
+
+## git log --online [output]
+================================= 6 passed in 0.21s =================================
+(.venv) carolinaarasavilli@Carolinas-MacBook-Pro ai201-project6-cinelog-starter % git log --oneline
+c130b7e (HEAD -> feature/watchlist) docs: document rebase resolution for comment 6
+5bac622 fix: restore WatchlistEntry model with UUID film_id after rebase
+b07f48e docs: document design decisions for comments 4 and 5
+c076732 docs: document responses to comments 1-3
+0f70cc6 test: add test for duplicate watchlist entries
+397f287 fix: add deduplication check to add_to_watchlist
+e5c66c8 test: add test for nonexistent film in add_to_watchlist
+b8f725e fix: rename save_to_watchlist to add_to_watchlist per naming convention
+1e76bd7 fix: update film retrieval method to use db.session.get in collection and watchlist services
+3419d7c feat: add watchlist model and add_to_watchlist endpoint
+bbe206c (origin/main, origin/HEAD, main) Merge pull request #2 from ascherj/chore/add-gitignore
+718a9a8 chore: add .gitignore for generated files
+07ca580 refactor: migrate film IDs from integer to UUID
+014ae54 feat: initial CineLog API with film collection feature
