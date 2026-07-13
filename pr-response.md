@@ -26,3 +26,21 @@
 **How I resolved it:** After the rebase completed without prompting for conflict resolution, checked models.py and found WatchlistEntry was missing entirely. So, I manually re-added the class with film_id as db.String(36) to match the new UUID-based Film.id, keeping the rest of the class (id, user_id, date_added, public, to_dict()) consistent with its pre-rebase version.
 
 **How I verified no conflict remains:** To verify, I ran pytest tests/ -v and confirmed all 6 tests passed. Ran git log --oneline --graph to confirm the branch history has no merge commits introduced by the rebase itself. I also checked services/watchlist_service.
+
+
+## PR description
+Adds a watchlist feature allowing users to save films they want to watch. Includes a WatchlistEntry model, add_to_watchlist/get_watchlist service functions, and REST endpoints (GET /watchlist/<user_id>, POST /watchlist/<user_id>/add).
+
+Design decisions:
+- Watchlist entries default to public visibility in order to access what others are following and to get recommendations. 
+- Results are sorted by recent-first in order to keep up with current interests and trends.
+
+Manual testing:
+1. Run `python app.py`
+2. POST to /watchlist/<user_id>/add with body {"film_id": "<uuid>"} — confirm a 201 response with the new entry
+3. GET /watchlist/<user_id> — confirm the film appears in the list
+4. POST the same film_id again — confirm it's rejected (duplicate check)
+5. POST with a nonexistent film_id — confirm a not-found error
+
+## AI Usage
+Used AI for codebase orientation in order to understand what add_to_collection() and the existing test patterns did before writing the equivalent watchlist code myself. I also used it to catch a couple of mechanical issues during implementation (a broken line from a manual edit, a missing exception class) and to help script the interactive rebase/commit-message rewrite in Milestone 4. 
