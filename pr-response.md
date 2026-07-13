@@ -19,3 +19,10 @@
 **My position:** Date-added (recent first)
 **Reasoning:** This order optimizes for "what did I just add, what am I likely to watch soon". This works as a working-list mental model, and it is useful if people add films with the intention of watching them shortly after.
 **Engagement with reviewer's point:** I agree with the reviewers point because people want to keep up with they added recently because sometimes that list may become overwhelming with multiple movies added, thus it is useful to have an order that shows what you added recently to keep up with your current interests. 
+
+## Comment 6 — Rebase
+**What conflicted:** I fetched the updated main, ran git rebase origin/main. Moroever, the Film.id and CollectionEntry.film_id had been migrated from integer to UUID on main. Note the interesting part, there's no textual merge conflict was flagged by git, because the commit that added the watchlist code never actually touched models.py itself, since WatchlistEntry already existed in the shared ancestor commit and main's UUID refactor commit removed it entirely. So the "conflict" was silent/structural rather than a normal conflict-marker situation.
+
+**How I resolved it:** After the rebase completed without prompting for conflict resolution, checked models.py and found WatchlistEntry was missing entirely. So, I manually re-added the class with film_id as db.String(36) to match the new UUID-based Film.id, keeping the rest of the class (id, user_id, date_added, public, to_dict()) consistent with its pre-rebase version.
+
+**How I verified no conflict remains:** To verify, I ran pytest tests/ -v and confirmed all 6 tests passed. Ran git log --oneline --graph to confirm the branch history has no merge commits introduced by the rebase itself. I also checked services/watchlist_service.
